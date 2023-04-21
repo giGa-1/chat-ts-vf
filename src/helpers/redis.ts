@@ -12,4 +12,11 @@ export async function fetchRedis(command: Commands, ...args: (string | number)[]
         },
         cache:'no-store',
     })
+
+    if(!response.ok) {
+        throw new Error(`Error executing Redis command: ${response.statusText}`)
+    }
+
+    const data = await response.json();
+    return data.result
 }
