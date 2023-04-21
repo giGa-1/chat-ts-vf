@@ -1,7 +1,12 @@
 import Button from '@/components/UI/Button'
 
-export default  function Home() {
+const page = async () => {
+
   return (
     <Button >Hello</Button>
+   
   )
 }
+
+
+export default page 
