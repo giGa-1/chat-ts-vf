@@ -7,10 +7,7 @@ const page =  async  ()=> {
   const session = await getServerSession(authOptions)
   console.log(session)
   return (
-    // <Button >Hello</Button>
-    <pre>
-      {JSON.stringify(session)}
-    </pre>
+    <Button >Hello</Button>
   )
 }
 
