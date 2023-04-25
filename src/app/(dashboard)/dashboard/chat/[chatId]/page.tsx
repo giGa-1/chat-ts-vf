@@ -1,3 +1,4 @@
+import ChatInput from '@/components/ChatInput';
 import Messages from '@/components/Messages';
 import { fetchRedis } from '@/helpers/redis';
 import { authOptions } from '@/lib/auth';
@@ -18,13 +19,13 @@ async function getChatMessage(chatId:string) {
   try {
       const result: string[] =  await fetchRedis(
         'zrange',
-        `chat:${chatId}:message`,
+        `chat:${chatId}:messages`,
         0,-1
       )
 
       const dbMessage = result.map((message = '') => JSON.parse(message) as Message);
         
-      const reversedDbMessages = dbMessage.reverse();
+      const reversedDbMessages = dbMessage;
 
       const messages = messageArrayValidator.parse(reversedDbMessages);
       return messages
@@ -82,7 +83,7 @@ const page = async ({ params }: pageProps) => {
 
     <Messages initialMessages={initialMessages} sessionId={session.user.id}/>
 
-    <ChatInput />
+    <ChatInput chatId={chatId} chatPartner={chatPartner}/>
 
   </div>
 }

@@ -1,3 +1,4 @@
+"use client"
 import { cn } from '@/lib/utils';
 import { Message } from '@/lib/validations/message';
 import { FC, useRef, useState } from 'react'
@@ -13,10 +14,10 @@ const Messages: FC<MessagesProps> = ({
 
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessanges] = useState<Message[]>(initialMessages);
+  console.log(messages)
 
-
-  return <div id='messages'  className='flex h-full flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
-      <div ref={scrollDownRef} className="">
+  return <div id='messages'  className='flex h-full flex-1 flex-col-reverse gap-4 py-5 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
+      <div ref={scrollDownRef} className="flex flex-col  gap-3">
 
         {messages.map((message,index) => {
           const isCurrentUser = message.senderId == sessionId
