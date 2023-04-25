@@ -2,15 +2,18 @@
 import { cn } from '@/lib/utils';
 import { Message } from '@/lib/validations/message';
 import { format } from 'date-fns';
+import Image from 'next/image';
 import { FC, useRef, useState } from 'react'
 
 interface MessagesProps {
   initialMessages: Message[],
-  sessionId: string
+  sessionId: string,
+  sessionImg: string | null | undefined,
+  chatPartner: User
 }
 
 const Messages: FC<MessagesProps> = ({
-  initialMessages, sessionId
+  initialMessages, sessionId,sessionImg,chatPartner
 }) => {
 
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
@@ -45,6 +48,14 @@ const Messages: FC<MessagesProps> = ({
                     {formatTimestamp(message.timestamp)}
                   </span>
                 </span>
+              </div>
+
+              <div className={cn('relative w-6 h-6', {
+                'order-2':isCurrentUser,
+                'order-1':!isCurrentUser,
+                'invisible': hasNextMessageFromSameUser
+              })}>
+                <Image fill src={isCurrentUser ? (sessionImg as string) : chatPartner.image} referrerPolicy='no-referrer' alt={`Profile Picture`} className='rounded-full'/>
               </div>
             </div>
            </div> 
