@@ -46,7 +46,7 @@ const page = async ({ params }: pageProps) => {
   const {user} = session;
 
   const [userId1, userId2] = chatId.split(`--`);
-
+  
   if(user.id !== userId1 && user.id !== userId2) {
     notFound()
   }
