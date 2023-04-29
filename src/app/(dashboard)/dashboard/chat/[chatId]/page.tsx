@@ -28,7 +28,7 @@ async function getChatMessage(chatId:string) {
       const reversedDbMessages = dbMessage;
 
       const messages = messageArrayValidator.parse(reversedDbMessages);
-      return messages
+      return messages.reverse()
         
     } catch (error) {
       notFound()
@@ -52,7 +52,10 @@ const page = async ({ params }: pageProps) => {
   }
 
   const chatPartnerId = user.id === userId1 ? userId2 : userId1
-  const chatPartner = (await db.get(`user:${chatPartnerId}`)) as User
+  const chatPartnerRaw = await fetchRedis('get', `user:${chatPartnerId}`) as string
+  const chatPartner = JSON.parse(chatPartnerRaw) as User
+
+
   const initialMessages = await getChatMessage(chatId);
 
   return <div className='flex-1 justify-between flex flex-col h-full max-h-[calc(100vh-6rem)] '>

@@ -21,6 +21,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId,friends}) => {
     const router = useRouter();
     const pathname = usePathname();
     const [unseenMessages, setUnseenMessages] = useState<Message[]>([])
+    const [activeChats, setActiveChats] = useState<User[]>(friends)
 
     useEffect(()=>{
         pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`));
@@ -48,8 +49,9 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId,friends}) => {
             setUnseenMessages((prev)=>[...prev,message])
 
         }
-        const newFriendHandler = ()=>{
-            router.refresh()
+        const newFriendHandler = (newFriend: User)=>{
+            setActiveChats((prev)=>[...prev, newFriend])
+            // router.refresh()
         }
         pusherClient.bind(`new_message`, chatHandler)
         pusherClient.bind(`new_friend`, newFriendHandler)
@@ -75,7 +77,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({sessionId,friends}) => {
         }
     },[pathname])
   return <ul role='list' className='max-h-[25rem] overflow-y-auto -mx-2 space-y-1'>
-    {friends.sort().map((friend)=> {
+    {activeChats.sort().map((friend)=> {
         const unseenMessagesCount = unseenMessages.filter(unseen => unseen.senderId === friend.id).length
         return (<li  className='' key={friend.id}>
             <a href={`/dashboard/chat/${chatHrefConstructor(sessionId, friend.id)}`} 

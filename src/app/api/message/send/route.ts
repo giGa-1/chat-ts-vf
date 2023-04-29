@@ -47,13 +47,13 @@ export async function POST(req: Request) {
 
         // 
 
-        pusherServer.trigger(
+        await pusherServer.trigger(
             toPusherKey(`chat:${chatId}`),
             'incoming_message',
             message
         )
 
-        pusherServer.trigger(toPusherKey(`user:${friendId}:chats`), 'new_message', {
+        await pusherServer.trigger(toPusherKey(`user:${friendId}:chats`), 'new_message', {
             ...message, 
             senderImg: sender.image,
             senderName: sender.name,
