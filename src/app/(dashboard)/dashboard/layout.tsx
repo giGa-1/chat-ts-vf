@@ -1,4 +1,5 @@
 import FriendRequestsSidebarOption from '@/components/FriendRequestsSidebarOption'
+import MobileChatLayout from '@/components/MobileChatLayout'
 import SidebarChatList from '@/components/SidebarChatList'
 import SignOutButton from '@/components/SignOutButton'
 import { Icon, Icons } from '@/components/icons'
@@ -36,6 +37,9 @@ const layout = async ({children}: layoutProps) => {
     const unseenRequestCount = (await fetchRedis('smembers', `user:${session.user.id}:incoming_friend_requests`) as User[]).length
     return (
         <div className='w-full  flex h-screen'>
+            <div className="md:hidden">
+                <MobileChatLayout />
+            </div>
             <div className="w-full overflow-x-hidden flex max-w-xs grow  flex-col gap-y-5 overflow-y-auto border-r border-gray-200  bg-white px-6">
                 <Link href={'/dashboard'} className='flex h-16 shrink-0 items-center'>
                     <Icons.Logo className='h-8 w-auto text-indigo-600 '/>
