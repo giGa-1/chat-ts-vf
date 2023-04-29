@@ -25,7 +25,6 @@ const Messages: FC<MessagesProps> = ({
     pusherClient.subscribe(toPusherKey(`chat:${chatId}`))
     const chatMessagesHandler = (message: Message)=>{
         setMessanges((prev)=>[message, ...prev].sort((prev,next)=>prev.timestamp-next.timestamp))
-        console.log(messages)
     }
     pusherClient.bind('incoming_message', chatMessagesHandler)
 
@@ -35,8 +34,8 @@ const Messages: FC<MessagesProps> = ({
         )
         pusherClient.unbind('incoming_message', chatMessagesHandler)
     }
-},[])
-console.log(messages)
+},[chatId])
+
 
 
 
