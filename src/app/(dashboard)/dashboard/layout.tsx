@@ -6,6 +6,7 @@ import { Icon, Icons } from '@/components/icons'
 import { getFriendsByUserId } from '@/helpers/get-friends-by-user-id'
 import { fetchRedis } from '@/helpers/redis'
 import { authOptions } from '@/lib/auth'
+import { SidebarOption } from '@/types/typing'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,12 +17,6 @@ interface layoutProps {
     children: ReactNode
 }
 
-interface SidebarOption {
-    id: number,
-    name: string,
-    href: string,
-    Icon: Icon,
-}
 
 const sidebarOptions: SidebarOption[] = [
     {id: 1, name:'Add friend', href: '/dashboard/add', Icon: 'UserPlus'},
@@ -36,11 +31,11 @@ const layout = async ({children}: layoutProps) => {
 
     const unseenRequestCount = (await fetchRedis('smembers', `user:${session.user.id}:incoming_friend_requests`) as User[]).length
     return (
-        <div className='w-full  flex h-screen'>
+        <div className='w-full flex h-screen'>
             <div className="md:hidden">
-                <MobileChatLayout />
+                <MobileChatLayout friends={friends} session={session} sidebarOptions={sidebarOptions} unseenRequestCount={unseenRequestCount}/>
             </div>
-            <div className="w-full overflow-x-hidden flex max-w-xs grow  flex-col gap-y-5 overflow-y-auto border-r border-gray-200  bg-white px-6">
+            <div className="w-full overflow-x-hidden hidden md:flex    max-w-xs grow  flex-col gap-y-5 overflow-y-auto border-r border-gray-200  bg-white px-6">
                 <Link href={'/dashboard'} className='flex h-16 shrink-0 items-center'>
                     <Icons.Logo className='h-8 w-auto text-indigo-600 '/>
                 </Link>
@@ -108,7 +103,7 @@ const layout = async ({children}: layoutProps) => {
                 </nav>
             </div>
             
-            <aside className='max-h-screen container pu-16 md:py-12'>
+            <aside className='max-h-screen container py-16 md:py-12'>
                 {children}
             </aside>
         </div>
